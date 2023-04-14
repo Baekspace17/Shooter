@@ -10,8 +10,12 @@ public class PlayerStat : MonoBehaviour
 
     public int gold = 0;
 
-    public List<GameObject> weapons;
-    public bool[] hasWeapons;
+    public Transform weaponRoot;
+    public Transform itemPocketRoot;
+
+    public List<GameObject> weapons; // 플레이어 무기 모델 setActive용
+    public WeaponType currentWeapon; // 현재 무기타입 저장 
+    public GameObject itemPocket; // 아이템획득시 저장
     public int[] bulletCount;
 
     // Start is called before the first frame update
@@ -29,7 +33,6 @@ public class PlayerStat : MonoBehaviour
     void Init()
     {
         currentHp = maxHp;
-        hasWeapons = new bool[6];
         bulletCount = new int[6];
     }
 
@@ -51,4 +54,6 @@ public class PlayerStat : MonoBehaviour
         currentHp += hp;
         CheckHp();
     }
+
+    
 }

@@ -4,15 +4,14 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 public class PlayerController : MonoBehaviour
 {
     [Header("컴포넌트")]
     public Rigidbody playerRb;
     public Animator animator;
-    public PlayerStat stat;
-
-    public GameObject weaponRoot;
+    public PlayerStat stat;    
 
     [HideInInspector] public Transform animCam;
     [HideInInspector] public Vector3 animCamForward;
@@ -68,18 +67,8 @@ public class PlayerController : MonoBehaviour
         moveValue = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         currentVelocity = new Vector3(moveValue.x, 0f, moveValue.y).normalized;
         runOffset = 0.5f + (Input.GetAxis("Sprint") * 0.5f);
-        isRun = Input.GetKey(KeyCode.LeftShift);        
-        if (Input.GetKeyDown(KeyCode.Alpha1)) // 무기 타입에 따라 애니메이션 동작 나뉨
-        {
-            if(useRifle) useRifle = !useRifle;
-            usePistol = !usePistol;
-        }
-        if(Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            if(usePistol) usePistol = !usePistol;
-            useRifle = !useRifle;
-        }
-        
+        isRun = Input.GetKey(KeyCode.LeftShift);
+
         animSpeed = 2f * runOffset;
     }
 
@@ -117,7 +106,10 @@ public class PlayerController : MonoBehaviour
 
     void Fire()
     {
-
+        if(stat.currentWeapon != WeaponType.None)
+        {
+            
+        }
     }
 
     void GetItem(GameObject obj)
@@ -129,15 +121,9 @@ public class PlayerController : MonoBehaviour
         }
         if (item.itemType == ItemType.Weapon)
         {
-            int num = (int)item.weaponScript.wType -1;
-            if (num < 0) num = 0;
-            if (stat.hasWeapons[num] == false)
-            {
-                stat.hasWeapons[num] = true;
-            }            
-            stat.bulletCount[num] += item.weaponScript.bulletCount;                                  
+            // 무기 획득시
+                                            
         }
-
     }
 
     void AnimCamSet()
@@ -188,7 +174,7 @@ public class PlayerController : MonoBehaviour
         if (other.tag == "Item")
         {
             GetItem(other.gameObject);
-            Destroy(other.gameObject);
+            
         }
     }
 }

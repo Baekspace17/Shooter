@@ -13,7 +13,6 @@ public class GameManager : MonoBehaviour
     public PlayerStat _Pstat;
 
     public List<GameObject> _WeaponPrefabs;
-    public List<GameObject> _Weapon;
     public List<GameObject> _ItemPrefabs;
 
     private void Awake()
@@ -67,7 +66,7 @@ public class GameManager : MonoBehaviour
     {
         foreach(GameObject obj in _WeaponPrefabs)
         {
-            GameObject weapon = Instantiate(obj, _Pctrl.weaponRoot.transform);
+            GameObject weapon = Instantiate(obj, _Pstat.weaponRoot);
             _Pstat.weapons.Add(weapon);
             weapon.SetActive(false);
         }        
