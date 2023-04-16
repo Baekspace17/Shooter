@@ -38,7 +38,7 @@ public class Weapon : MonoBehaviour
         switch (type)
         {
             case WeaponType.Pistol:
-                fireRate = 0.7f;
+                fireRate = 0.5f;
                 bulletCount = 10000;
                 break;
             case WeaponType.SMG:
@@ -54,7 +54,7 @@ public class Weapon : MonoBehaviour
                 bulletCount = 5;
                 break;
             case WeaponType.LMG:
-                fireRate = 3f;
+                fireRate = 0.3f;
                 bulletCount = 100;
                 break;
             case WeaponType.RPG:

@@ -40,7 +40,10 @@ public class PlayerController : MonoBehaviour
     public bool isFire;
 
     [Header("ÄðÅ¸ÀÓ")]
+    public float fireRate;
     public float dashCoolTime = 0f;
+    public float fireCoolTime = 0f;
+    
 
     void Start()
     {
@@ -54,18 +57,15 @@ public class PlayerController : MonoBehaviour
     {
         InputMove();
         LookAtMouse();        
-        Dash();        
+        Dash();
+        Fire();
     }
 
     void FixedUpdate()
     {
         Move();
-        
-        if (isFire)
-        {
-            Fire();
-        }
         AnimCamSet();
+        WeaponCheck();
     }
 
     void InputMove()
@@ -74,16 +74,29 @@ public class PlayerController : MonoBehaviour
         currentVelocity = new Vector3(moveValue.x, 0f, moveValue.y).normalized;
     }
 
+    void LookAtMouse()
+    {
+        Ray cameraRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Plane groundPlane = new Plane(Vector3.up, Vector3.zero);
+
+        float rayLength;
+        if (groundPlane.Raycast(cameraRay, out rayLength))
+        {
+            Vector3 pointTolook = cameraRay.GetPoint(rayLength);
+            transform.LookAt(new Vector3(pointTolook.x, transform.position.y, pointTolook.z));
+            Debug.DrawLine(cameraRay.origin, pointTolook, Color.red);
+        }
+    }
+
     void Move()
     {
         if (!isDash)
         {
             targetSpeed = moveSpeed;
             if (currentVelocity == Vector3.zero) targetSpeed = 0;
+            movePosition = Vector3.Lerp(movePosition, currentVelocity, 5f * Time.deltaTime);
         }
-        else movePosition = dashPos;        
-
-        movePosition = Vector3.Lerp(movePosition, currentVelocity, 5f * Time.deltaTime);
+        else movePosition = dashPos;
 
         playerRb.AddForce(movePosition * targetSpeed, ForceMode.VelocityChange);
     }
@@ -109,25 +122,37 @@ public class PlayerController : MonoBehaviour
         isDash = false;
     }
 
-    void LookAtMouse()
-    {
-        Ray cameraRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-        Plane groundPlane = new Plane(Vector3.up, Vector3.zero);
-
-        float rayLength;
-        if (groundPlane.Raycast(cameraRay, out rayLength))
-        {
-            Vector3 pointTolook = cameraRay.GetPoint(rayLength);
-            transform.LookAt(new Vector3(pointTolook.x, transform.position.y, pointTolook.z));
-            Debug.DrawLine(cameraRay.origin, pointTolook, Color.red);
-        }
-    }    
-
     void Fire()
     {
-        if(stat.currentWeapon != WeaponType.None)
+        fireCoolTime -= Time.deltaTime;
+        if (fireCoolTime < 0) fireCoolTime = 0;
+
+        if (stat.currentWeaponType != WeaponType.None)
         {
-            
+            fireRate = stat.currentWeapon.fireRate;
+            if (fireCoolTime <= 0 && Input.GetKey(KeyCode.Mouse0))
+            {
+                if (stat.bulletCount[(int)stat.currentWeaponType - 1] > 0)
+                {
+                    stat.bulletCount[(int)stat.currentWeaponType - 1]--;
+                    Debug.Log("ÆÄÀÌ¾î " + stat.currentWeapon + stat.bulletCount[(int)stat.currentWeaponType - 1]);
+                    fireCoolTime = fireRate;
+                    // ÃÑ¾Ë »ý¼º
+                    // ¸ÓÁñÇÃ·¡½Ã
+                }
+            }            
+        }
+    }
+    public void WeaponCheck()
+    {
+        if (stat.currentWeaponType != WeaponType.None)
+        {
+            if (stat.bulletCount[(int)stat.currentWeaponType - 1] <= 0)
+            {
+                stat.getItemWeapon = WeaponType.Pistol;
+                GetWeaponAnim();
+                stat.Invoke("SwapWeapon", 0.6f);
+            }
         }
     }
 
@@ -140,8 +165,39 @@ public class PlayerController : MonoBehaviour
         }
         if (item.itemType == ItemType.Weapon)
         {
-            // ÃÑ¾Ë / È¸º¹ ¾ÆÀÌÅÛ È¹µæ½Ã
-                                            
+            stat.getItemWeapon = item.weaponScript.wType;
+            if (stat.currentWeaponType == WeaponType.None)
+            {                
+                stat.UseWeapon();
+            }
+            if (stat.currentWeaponType != stat.getItemWeapon)
+            {
+                GetWeaponAnim();
+                stat.Invoke("SwapWeapon", 0.6f);
+            }
+
+            stat.bulletCount[(int)stat.getItemWeapon - 1] += item.weaponScript.bulletCount;
+        }
+        if (item.itemType == ItemType.Heal)
+        {
+
+        }
+    }
+
+    public void GetWeaponAnim()
+    {
+        switch (stat.currentWeaponType)
+        {
+            case WeaponType.Pistol:
+            case WeaponType.SMG:
+            case WeaponType.RPG:
+                usePistol = !usePistol;
+                break;
+            case WeaponType.AR:
+            case WeaponType.SG:
+            case WeaponType.LMG:
+                useRifle = !useRifle;
+                break;
         }
     }
 
