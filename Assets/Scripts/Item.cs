@@ -5,7 +5,8 @@ using UnityEngine;
 public enum ItemType
 {
     Gold,
-    Weapon
+    Weapon,
+    Heal
 }
 public class Item : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class Item : MonoBehaviour
     public float upDownSpeed = 2f;
     public ItemType itemType;
     public int gold = 0;
+    public float healPoint = 0f;
     public Weapon weaponScript;
 
     // Start is called before the first frame update
@@ -47,6 +49,10 @@ public class Item : MonoBehaviour
         if (type == ItemType.Weapon)
         {            
             weaponScript = transform.GetChild(0).GetComponent<Weapon>();            
+        }
+        if (type == ItemType.Heal)
+        {
+            healPoint = 0.3f;
         }
     }
 }

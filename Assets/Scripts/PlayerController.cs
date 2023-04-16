@@ -2,9 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
-using static UnityEditor.Progress;
 
 public class PlayerController : MonoBehaviour
 {
@@ -22,21 +21,26 @@ public class PlayerController : MonoBehaviour
 
     [Header("¿òÁ÷ÀÓ")]
     public Vector2 moveValue;
+    public Vector2 moveValue2;
     public Vector3 currentVelocity;
+    public Vector3 dashVelocity;
+    public Vector3 dashPos;
     public Vector3 movePosition;
 
     [Header("½ºÇÇµå")]
     public float targetSpeed;
-    public float animSpeed;
-    public float moveSpeed = 3f;
-    public float runSpeedRate = 2f;
-    public float runOffset;
+    public float moveSpeed = 6f;
+    public float dashPower = 15f;
 
     [Header("»óÅÂ")]
-    public bool isRun;
+    public bool isDash;
+    public bool dashInput;
     public bool usePistol;
     public bool useRifle;
     public bool isFire;
+
+    [Header("ÄðÅ¸ÀÓ")]
+    public float dashCoolTime = 0f;
 
     void Start()
     {
@@ -48,13 +52,15 @@ public class PlayerController : MonoBehaviour
     }
     void Update()
     {
-        InputKey();
-        LookAtMouse();
+        InputMove();
+        LookAtMouse();        
+        Dash();        
     }
 
     void FixedUpdate()
     {
         Move();
+        
         if (isFire)
         {
             Fire();
@@ -62,32 +68,45 @@ public class PlayerController : MonoBehaviour
         AnimCamSet();
     }
 
-    void InputKey()
+    void InputMove()
     {
-        moveValue = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+        moveValue = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));        
         currentVelocity = new Vector3(moveValue.x, 0f, moveValue.y).normalized;
-        runOffset = 0.5f + (Input.GetAxis("Sprint") * 0.5f);
-        isRun = Input.GetKey(KeyCode.LeftShift);
-
-        animSpeed = 2f * runOffset;
     }
 
     void Move()
     {
-        if (isRun)
-        {
-            targetSpeed = moveSpeed * runSpeedRate;
-        }
-        else
+        if (!isDash)
         {
             targetSpeed = moveSpeed;
+            if (currentVelocity == Vector3.zero) targetSpeed = 0;
         }
-
-        if (currentVelocity == Vector3.zero) targetSpeed = 0;
+        else movePosition = dashPos;        
 
         movePosition = Vector3.Lerp(movePosition, currentVelocity, 5f * Time.deltaTime);
 
         playerRb.AddForce(movePosition * targetSpeed, ForceMode.VelocityChange);
+    }
+
+    void Dash()
+    {
+        dashCoolTime -= Time.deltaTime;
+        if (dashCoolTime < 0) dashCoolTime = 0;
+
+        if (dashCoolTime <= 0 && Input.GetKeyDown(KeyCode.Space))
+        {
+            dashPos = transform.TransformDirection(Vector3.back);
+            targetSpeed = dashPower;
+            isDash = true;
+            dashCoolTime = 3f;
+            Invoke("EndDash", 0.3f);
+        }
+    }
+
+    void EndDash()
+    {
+        targetSpeed = moveSpeed;
+        isDash = false;
     }
 
     void LookAtMouse()
@@ -121,7 +140,7 @@ public class PlayerController : MonoBehaviour
         }
         if (item.itemType == ItemType.Weapon)
         {
-            // ¹«±â È¹µæ½Ã
+            // ÃÑ¾Ë / È¸º¹ ¾ÆÀÌÅÛ È¹µæ½Ã
                                             
         }
     }
@@ -163,8 +182,8 @@ public class PlayerController : MonoBehaviour
 
     void UpdateAnim()
     {
-        animator.SetFloat("MoveX", turnValue * animSpeed, 0.1f, Time.deltaTime);
-        animator.SetFloat("MoveY", forwardValue * animSpeed, 0.1f, Time.deltaTime);
+        animator.SetFloat("MoveX", turnValue * 2f, 0.1f, Time.deltaTime);
+        animator.SetFloat("MoveY", forwardValue * 2f, 0.1f, Time.deltaTime);
         animator.SetBool("UsePistol", usePistol);
         animator.SetBool("UseRifle", useRifle);
     }
@@ -174,7 +193,7 @@ public class PlayerController : MonoBehaviour
         if (other.tag == "Item")
         {
             GetItem(other.gameObject);
-            
+            Destroy(other.gameObject);
         }
     }
 }

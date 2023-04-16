@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
 
     public GameObject _PlayerPrefab;
     public GameObject _Player;
+    public GameObject _DashTrail;
     public PlayerController _Pctrl;
     public PlayerStat _Pstat;
 
@@ -26,12 +27,12 @@ public class GameManager : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
+        Init();
     }
 
     // Start is called before the first frame update
     void Start()
-    {
-        Init();
+    {        
         GameStart();
     }
 
@@ -60,6 +61,9 @@ public class GameManager : MonoBehaviour
         _Player = Instantiate(_PlayerPrefab, Vector3.zero, Quaternion.identity);
         _Pctrl = _Player.GetComponent<PlayerController>();
         _Pstat = _Player.GetComponent<PlayerStat>();
+        _DashTrail = new GameObject("DashTrail");
+        _DashTrail.AddComponent<DashTrail>();
+
     }
 
     void CreateWeapon()

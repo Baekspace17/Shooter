@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerStat : MonoBehaviour
 {
     public int currentHp;
-    public int maxHp = 10;
+    public int maxHp = 100;
     public bool isDead;
 
     public int gold = 0;
@@ -53,7 +53,5 @@ public class PlayerStat : MonoBehaviour
     {
         currentHp += hp;
         CheckHp();
-    }
-
-    
+    }        
 }

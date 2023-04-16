@@ -2529,17 +2529,20 @@ MonoBehaviour:
   turnValue: 0
   forwardValue: 0
   moveValue: {x: 0, y: 0}
+  moveValue2: {x: 0, y: 0}
   currentVelocity: {x: 0, y: 0, z: 0}
+  dashVelocity: {x: 0, y: 0, z: 0}
+  dashPos: {x: 0, y: 0, z: 0}
   movePosition: {x: 0, y: 0, z: 0}
   targetSpeed: 0
-  animSpeed: 0
-  moveSpeed: 3
-  runSpeedRate: 2
-  runOffset: 0
-  isRun: 0
+  moveSpeed: 6
+  dashPower: 20
+  isDash: 0
+  dashInput: 0
   usePistol: 0
   useRifle: 0
   isFire: 0
+  dashCoolTime: 0
 --- !u!114 &7187493009061985515
 MonoBehaviour:
   m_ObjectHideFlags: 0

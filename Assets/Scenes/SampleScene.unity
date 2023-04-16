@@ -675,10 +675,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _PlayerPrefab: {fileID: 0}
   _Player: {fileID: 0}
+  _DashTrail: {fileID: 0}
   _Pctrl: {fileID: 0}
   _Pstat: {fileID: 0}
   _WeaponPrefabs: []
-  _Weapon: []
   _ItemPrefabs: []
 --- !u!4 &1804101065
 Transform:
@@ -1149,6 +1149,26 @@ PrefabInstance:
     - target: {fileID: 1088123895459315524, guid: 5d90cc56e25d1324e89302274cd26265, type: 3}
       propertyPath: m_Name
       value: RPG
+      objectReference: {fileID: 0}
+    - target: {fileID: 4454239953883183843, guid: 5d90cc56e25d1324e89302274cd26265, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4454239953883183843, guid: 5d90cc56e25d1324e89302274cd26265, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4454239953883183843, guid: 5d90cc56e25d1324e89302274cd26265, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4454239953883183843, guid: 5d90cc56e25d1324e89302274cd26265, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4454239953883183843, guid: 5d90cc56e25d1324e89302274cd26265, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5d90cc56e25d1324e89302274cd26265, type: 3}
