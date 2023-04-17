@@ -15,7 +15,7 @@ public class Item : MonoBehaviour
     public float upDownSpeed = 2f;
     public ItemType itemType;
     public int gold = 0;
-    public float healPoint = 0f;
+    public int healPoint = 0;
     public Weapon weaponScript;
 
     // Start is called before the first frame update
@@ -52,7 +52,7 @@ public class Item : MonoBehaviour
         }
         if (type == ItemType.Heal)
         {
-            healPoint = 0.3f;
+            healPoint = 30;
         }
     }
 }

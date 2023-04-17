@@ -39,26 +39,32 @@ public class Weapon : MonoBehaviour
         {
             case WeaponType.Pistol:
                 fireRate = 0.4f;
+                range = 10f;
                 bulletCount = 10000;
                 break;
             case WeaponType.SMG:
                 fireRate = 0.1f;
+                range = 12f;
                 bulletCount = 50;
                 break;
             case WeaponType.AR:
                 fireRate = 0.2f;
+                range = 20f;
                 bulletCount = 100;
                 break;
             case WeaponType.SG:
                 fireRate = 0.7f;
+                range = 8f;
                 bulletCount = 10;
                 break;
             case WeaponType.LMG:
                 fireRate = 0.15f;
+                range = 15f;
                 bulletCount = 200;
                 break;
             case WeaponType.RPG:
                 fireRate = 1f;
+                range = 20f;
                 bulletCount = 3;
                 break;
             default:

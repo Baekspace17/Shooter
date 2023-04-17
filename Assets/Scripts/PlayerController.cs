@@ -137,7 +137,7 @@ public class PlayerController : MonoBehaviour
                 if (stat.currentWeaponType == WeaponType.RPG)
                 {
                     stat.weapons[(int)stat.currentWeaponType - 1].transform.Find("Rocket").gameObject.SetActive(false);
-                }                
+                }
 
                 if (stat.bulletCount[(int)stat.currentWeaponType - 1] > 0)
                 {
@@ -204,7 +204,7 @@ public class PlayerController : MonoBehaviour
         }
         if (item.itemType == ItemType.Heal)
         {
-
+            stat.currentHp += stat.maxHp * item.healPoint;
         }
     }
 
@@ -224,7 +224,6 @@ public class PlayerController : MonoBehaviour
                 break;
         }
     }
-
 
     private void OnTriggerEnter(Collider other)
     {

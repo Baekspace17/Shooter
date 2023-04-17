@@ -2521,7 +2521,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerRb: {fileID: 0}
-  animator: {fileID: 0}
   stat: {fileID: 0}
   MuzzleRoot: {fileID: 0}
   muzzle: {fileID: 0}

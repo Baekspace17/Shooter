@@ -87,7 +87,7 @@ public class DashTrail : MonoBehaviour
             skinMeshs[i].BakeMesh(trailStructs[count].meshs[i]);
             trailStructs[count].meshFilters.Add(trailStructs[count].Obj[i].GetComponent<MeshFilter>());
             trailStructs[count].meshFilters[i].mesh = trailStructs[count].meshs[i];            
-            trailStructs[count].Obj[i].GetComponent<MeshRenderer>().material = Resources.Load<Material>("Model/Test");
+            trailStructs[count].Obj[i].GetComponent<MeshRenderer>().material = Resources.Load<Material>("Model/TrailColor");
 
         }        
     }    
