@@ -38,28 +38,28 @@ public class Weapon : MonoBehaviour
         switch (type)
         {
             case WeaponType.Pistol:
-                fireRate = 0.5f;
+                fireRate = 0.4f;
                 bulletCount = 10000;
                 break;
             case WeaponType.SMG:
-                fireRate = 0.25f;
+                fireRate = 0.1f;
                 bulletCount = 50;
                 break;
             case WeaponType.AR:
-                fireRate = 0.4f;
-                bulletCount = 30;
-                break;
-            case WeaponType.SG:
-                fireRate = 1f;
-                bulletCount = 5;
-                break;
-            case WeaponType.LMG:
-                fireRate = 0.3f;
+                fireRate = 0.2f;
                 bulletCount = 100;
                 break;
+            case WeaponType.SG:
+                fireRate = 0.7f;
+                bulletCount = 10;
+                break;
+            case WeaponType.LMG:
+                fireRate = 0.15f;
+                bulletCount = 200;
+                break;
             case WeaponType.RPG:
-                fireRate = 2f;
-                bulletCount = 1;
+                fireRate = 1f;
+                bulletCount = 3;
                 break;
             default:
                 break;

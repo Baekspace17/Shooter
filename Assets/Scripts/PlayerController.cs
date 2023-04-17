@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,10 +6,10 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    [Header("ÄÄÆ÷³ÍÆ®")]
     public Rigidbody playerRb;
-    public Animator animator;
-    public PlayerStat stat;    
+    public PlayerStat stat;
+    public Transform MuzzleRoot;
+    public GameObject muzzle;
 
     [HideInInspector] public Transform animCam;
     [HideInInspector] public Vector3 animCamForward;
@@ -47,7 +46,6 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        animator = GetComponent<Animator>();
         playerRb = GetComponent<Rigidbody>();
         stat = GetComponent<PlayerStat>();
 
@@ -63,8 +61,7 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
-        Move();
-        AnimCamSet();
+        Move();        
         WeaponCheck();
     }
 
@@ -130,19 +127,46 @@ public class PlayerController : MonoBehaviour
         if (stat.currentWeaponType != WeaponType.None)
         {
             fireRate = stat.currentWeapon.fireRate;
+            if (stat.currentWeaponType == WeaponType.RPG && fireCoolTime <= 0)
+            {
+                stat.weapons[(int)stat.currentWeaponType - 1].transform.Find("Rocket").gameObject.SetActive(true);
+            }
+
             if (fireCoolTime <= 0 && Input.GetKey(KeyCode.Mouse0))
             {
+                if (stat.currentWeaponType == WeaponType.RPG)
+                {
+                    stat.weapons[(int)stat.currentWeaponType - 1].transform.Find("Rocket").gameObject.SetActive(false);
+                }                
+
                 if (stat.bulletCount[(int)stat.currentWeaponType - 1] > 0)
                 {
                     stat.bulletCount[(int)stat.currentWeaponType - 1]--;
                     Debug.Log("ÆÄÀÌ¾î " + stat.currentWeapon + stat.bulletCount[(int)stat.currentWeaponType - 1]);
                     fireCoolTime = fireRate;
-                    // ÃÑ¾Ë »ý¼º
-                    // ¸ÓÁñÇÃ·¡½Ã
+                    // ÃÑ¾Ë»ý¼º                    
+                    MuzzleCreate();
                 }
             }            
         }
     }
+
+    void MuzzleCreate()
+    {
+        int num = Random.Range(0, GameManager._Instance._MuzzlePrefabs.Count-1);
+        MuzzleRoot = stat.weapons[(int)stat.currentWeaponType - 1].transform.Find("MuzzlePoint");
+        muzzle = Instantiate(GameManager._Instance._MuzzlePrefabs[num], MuzzleRoot);        
+        StopCoroutine(DestroyMuzzle());
+        StartCoroutine(DestroyMuzzle());
+    }
+
+    IEnumerator DestroyMuzzle()
+    {
+        yield return new WaitForSeconds(.02f);
+        Destroy(muzzle);        
+        yield return null;
+    }
+
     public void WeaponCheck()
     {
         if (stat.currentWeaponType != WeaponType.None)
@@ -150,8 +174,8 @@ public class PlayerController : MonoBehaviour
             if (stat.bulletCount[(int)stat.currentWeaponType - 1] <= 0)
             {
                 stat.getItemWeapon = WeaponType.Pistol;
-                GetWeaponAnim();
-                stat.Invoke("SwapWeapon", 0.6f);
+                ChangeWeaponAnim();
+                stat.Invoke("SwapWeapon", 0.4f);
             }
         }
     }
@@ -167,13 +191,13 @@ public class PlayerController : MonoBehaviour
         {
             stat.getItemWeapon = item.weaponScript.wType;
             if (stat.currentWeaponType == WeaponType.None)
-            {                
+            {
                 stat.UseWeapon();
             }
             if (stat.currentWeaponType != stat.getItemWeapon)
             {
-                GetWeaponAnim();
-                stat.Invoke("SwapWeapon", 0.6f);
+                ChangeWeaponAnim();
+                stat.Invoke("SwapWeapon", 0.4f);
             }
 
             stat.bulletCount[(int)stat.getItemWeapon - 1] += item.weaponScript.bulletCount;
@@ -184,7 +208,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void GetWeaponAnim()
+    public void ChangeWeaponAnim()
     {
         switch (stat.currentWeaponType)
         {
@@ -201,48 +225,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void AnimCamSet()
-    {
-        if (animCam != null)
-        {
-            animCamForward = Vector3.Scale(animCam.up, new Vector3(1, 0, 1)).normalized;
-            animMove = moveValue.y * animCamForward + moveValue.x * animCam.right;
-        }
-        else
-        {
-            animMove = moveValue.y * Vector3.forward + moveValue.x * Vector3.right;
-        }
-
-        AnimMoveRotationSet(animMove);
-    }
-
-    void AnimMoveRotationSet(Vector3 move)
-    {
-        if (move.magnitude > 1)
-        {
-            move.Normalize();
-        }
-
-        animMoveInput = move;
-
-        ConvertMoveInput();
-        UpdateAnim();
-    }
-
-    void ConvertMoveInput()
-    {
-        Vector3 localMove = transform.InverseTransformDirection(animMoveInput);
-        turnValue = localMove.x;
-        forwardValue = localMove.z;
-    }
-
-    void UpdateAnim()
-    {
-        animator.SetFloat("MoveX", turnValue * 2f, 0.1f, Time.deltaTime);
-        animator.SetFloat("MoveY", forwardValue * 2f, 0.1f, Time.deltaTime);
-        animator.SetBool("UsePistol", usePistol);
-        animator.SetBool("UseRifle", useRifle);
-    }
 
     private void OnTriggerEnter(Collider other)
     {

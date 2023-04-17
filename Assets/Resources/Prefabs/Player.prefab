@@ -2430,6 +2430,7 @@ GameObject:
   - component: {fileID: 8755981066745622434}
   - component: {fileID: 8755981066745622435}
   - component: {fileID: 8755981066755227713}
+  - component: {fileID: 1365109461925950372}
   - component: {fileID: 7187493009061985515}
   m_Layer: 0
   m_Name: Player
@@ -2522,6 +2523,8 @@ MonoBehaviour:
   playerRb: {fileID: 0}
   animator: {fileID: 0}
   stat: {fileID: 0}
+  MuzzleRoot: {fileID: 0}
+  muzzle: {fileID: 0}
   animCam: {fileID: 0}
   animCamForward: {x: 0, y: 0, z: 0}
   animMove: {x: 0, y: 0, z: 0}
@@ -2542,7 +2545,29 @@ MonoBehaviour:
   usePistol: 0
   useRifle: 0
   isFire: 0
+  fireRate: 0
   dashCoolTime: 0
+  fireCoolTime: 0
+--- !u!114 &1365109461925950372
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8755981066755005536}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7db13c08d049314ca14bbf1e1e5d85c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 0}
+  pc: {fileID: 0}
+  animCam: {fileID: 0}
+  animCamForward: {x: 0, y: 0, z: 0}
+  animMove: {x: 0, y: 0, z: 0}
+  animMoveInput: {x: 0, y: 0, z: 0}
+  turnValue: 0
+  forwardValue: 0
 --- !u!114 &7187493009061985515
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2561,9 +2586,11 @@ MonoBehaviour:
   gold: 0
   weaponRoot: {fileID: 9009993962536955500}
   itemPocketRoot: {fileID: 4569338937667414619}
+  player: {fileID: 0}
   weapons: []
-  currentWeapon: 0
-  itemPocket: {fileID: 0}
+  currentWeapon: {fileID: 0}
+  currentWeaponType: 0
+  getItemWeapon: 0
   bulletCount: 
 --- !u!1 &8755981066755005538
 GameObject:

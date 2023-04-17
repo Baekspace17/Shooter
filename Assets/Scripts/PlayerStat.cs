@@ -25,7 +25,7 @@ public class PlayerStat : MonoBehaviour
     void Start()
     {
         Init();
-    }
+    }    
 
     // Update is called once per frame
     void Update()
@@ -37,7 +37,7 @@ public class PlayerStat : MonoBehaviour
     {
         player = GetComponent<PlayerController>();
         currentHp = maxHp;
-        bulletCount = new int[6];
+        bulletCount = new int[6];        
     }    
 
     public void UseWeapon()
@@ -45,7 +45,7 @@ public class PlayerStat : MonoBehaviour
         currentWeaponType = getItemWeapon;
         weapons[(int)currentWeaponType - 1].SetActive(true);
         currentWeapon = weapons[(int)currentWeaponType - 1].GetComponent<Weapon>();
-        player.GetWeaponAnim();
+        player.ChangeWeaponAnim();
     }
 
     public void SwapWeapon()

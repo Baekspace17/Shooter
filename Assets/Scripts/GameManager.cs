@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
 
     public List<GameObject> _WeaponPrefabs;
     public List<GameObject> _ItemPrefabs;
+    public List<GameObject> _MuzzlePrefabs;
 
     private void Awake()
     {
@@ -54,6 +55,8 @@ public class GameManager : MonoBehaviour
 
         GetWeaponPrefabs();
         GetItemPrefabs();
+        GetMuzzlePrefabs();
+
     }
 
     void CreatePlayer()
@@ -71,7 +74,7 @@ public class GameManager : MonoBehaviour
         foreach(GameObject obj in _WeaponPrefabs)
         {
             GameObject weapon = Instantiate(obj, _Pstat.weaponRoot);
-            _Pstat.weapons.Add(weapon);
+            _Pstat.weapons.Add(weapon);            
             weapon.SetActive(false);
         }        
     }
@@ -91,6 +94,15 @@ public class GameManager : MonoBehaviour
         foreach (GameObject obj in getObj)
         {
             _ItemPrefabs.Add(obj);
+        }
+    }
+
+    void GetMuzzlePrefabs()
+    {
+        GameObject[] getObj = Resources.LoadAll<GameObject>("Prefabs/Muzzle/");
+        foreach (GameObject obj in getObj)
+        {
+            _MuzzlePrefabs.Add(obj);
         }
     }
 }
