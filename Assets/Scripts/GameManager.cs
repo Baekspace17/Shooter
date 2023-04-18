@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
     public List<GameObject> _WeaponPrefabs;
     public List<GameObject> _ItemPrefabs;
     public List<GameObject> _MuzzlePrefabs;
+    public List<GameObject> _BulletPrefabs;
 
     private void Awake()
     {
@@ -56,6 +57,7 @@ public class GameManager : MonoBehaviour
         GetWeaponPrefabs();
         GetItemPrefabs();
         GetMuzzlePrefabs();
+        GetBulletPrefabs();
     }
 
     void CreatePlayer()
@@ -101,6 +103,15 @@ public class GameManager : MonoBehaviour
         foreach (GameObject obj in getObj)
         {
             _MuzzlePrefabs.Add(obj);
+        }
+    }
+
+    void GetBulletPrefabs()
+    {
+        GameObject[] getObj = Resources.LoadAll<GameObject>("Prefabs/Bullet/");
+        foreach (GameObject obj in getObj)
+        {
+            _BulletPrefabs.Add(obj);
         }
     }
 }

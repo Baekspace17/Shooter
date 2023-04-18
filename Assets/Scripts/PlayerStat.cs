@@ -12,7 +12,6 @@ public class PlayerStat : MonoBehaviour
     public int gold = 0;
 
     public Transform weaponRoot;
-    public Transform itemPocketRoot;
     public PlayerController player;
 
     public List<GameObject> weapons; // 플레이어 무기 모델 setActive용

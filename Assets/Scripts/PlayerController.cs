@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     public Rigidbody playerRb;
     public PlayerStat stat;
     public Transform MuzzleRoot;
+    public Transform shootPoint;
     public GameObject muzzle;
 
     [HideInInspector] public Transform animCam;
@@ -49,7 +50,7 @@ public class PlayerController : MonoBehaviour
     {
         playerRb = GetComponent<Rigidbody>();
         stat = GetComponent<PlayerStat>();
-
+        shootPoint = transform.Find("ShootPoint");
         animCam = Camera.main.transform;
     }
     void Update()
@@ -144,10 +145,35 @@ public class PlayerController : MonoBehaviour
                     stat.bulletCount[(int)stat.currentWeaponType - 1]--;
                     Debug.Log("파이어 " + stat.currentWeapon + stat.bulletCount[(int)stat.currentWeaponType - 1]);
                     fireCoolTime = fireRate;
-                    // 총알생성                    
+                    bulletCreate();
                     MuzzleCreate();
                 }
             }            
+        }
+    }
+
+    void bulletCreate()
+    {
+        switch (stat.currentWeaponType)
+        {
+            case WeaponType.Pistol:
+            case WeaponType.SMG:
+                Instantiate(GameManager._Instance._BulletPrefabs[1], shootPoint.position, transform.rotation);
+                break;
+            case WeaponType.SG:
+                for(int i = 0; i< 8; i++)
+                {                    
+                    Instantiate(GameManager._Instance._BulletPrefabs[2], shootPoint.position, transform.rotation);
+                }                
+                break;
+            case WeaponType.AR:
+            case WeaponType.LMG:
+                Instantiate(GameManager._Instance._BulletPrefabs[0], shootPoint.position, transform.rotation);
+                break;
+            case WeaponType.RPG:
+                Quaternion q = Quaternion.Euler(0f, 180f, 0f);
+                Instantiate(GameManager._Instance._BulletPrefabs[3], shootPoint.position, transform.rotation * q);
+                break;
         }
     }
 
