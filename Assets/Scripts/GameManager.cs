@@ -56,7 +56,6 @@ public class GameManager : MonoBehaviour
         GetWeaponPrefabs();
         GetItemPrefabs();
         GetMuzzlePrefabs();
-
     }
 
     void CreatePlayer()
@@ -66,7 +65,6 @@ public class GameManager : MonoBehaviour
         _Pstat = _Player.GetComponent<PlayerStat>();
         _DashTrail = new GameObject("DashTrail");
         _DashTrail.AddComponent<DashTrail>();
-
     }
 
     void CreateWeapon()

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 public class PlayerController : MonoBehaviour
 {
@@ -62,7 +63,6 @@ public class PlayerController : MonoBehaviour
     void FixedUpdate()
     {
         Move();        
-        WeaponCheck();
     }
 
     void InputMove()
@@ -166,19 +166,7 @@ public class PlayerController : MonoBehaviour
         Destroy(muzzle);        
         yield return null;
     }
-
-    public void WeaponCheck()
-    {
-        if (stat.currentWeaponType != WeaponType.None)
-        {
-            if (stat.bulletCount[(int)stat.currentWeaponType - 1] <= 0)
-            {
-                stat.getItemWeapon = WeaponType.Pistol;
-                ChangeWeaponAnim();
-                stat.Invoke("SwapWeapon", 0.4f);
-            }
-        }
-    }
+    
 
     void GetItem(GameObject obj)
     {
@@ -200,7 +188,7 @@ public class PlayerController : MonoBehaviour
                 stat.Invoke("SwapWeapon", 0.4f);
             }
 
-            stat.bulletCount[(int)stat.getItemWeapon - 1] += item.weaponScript.bulletCount;
+            stat.bulletCount[(int)stat.getItemWeapon - 1] = item.weaponScript.bulletCount;
         }
         if (item.itemType == ItemType.Heal)
         {

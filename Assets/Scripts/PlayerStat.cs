@@ -31,25 +31,45 @@ public class PlayerStat : MonoBehaviour
     void Update()
     {
         CheckHp();
-    }    
+        
+    }
+
+    void FixedUpdate()
+    {
+        WeaponCheck();
+    }
 
     void Init()
     {
         player = GetComponent<PlayerController>();
         currentHp = maxHp;
-        bulletCount = new int[6];        
-    }    
+        bulletCount = new int[6];
+    }
+    public void WeaponCheck()
+    {
+        if (currentWeaponType != WeaponType.None && bulletCount[(int)currentWeaponType - 1] <= 0)
+        {            
+            getItemWeapon = WeaponType.Pistol;
+            bulletCount[(int)getItemWeapon - 1] = 10000;
+            player.ChangeWeaponAnim();
+            Invoke("SwapWeapon", 0.4f);            
+        }
+    }
 
     public void UseWeapon()
-    {
+    {        
         currentWeaponType = getItemWeapon;
+        currentWeapon = weapons[(int)currentWeaponType - 1].GetComponent<Weapon>();        
         weapons[(int)currentWeaponType - 1].SetActive(true);
-        currentWeapon = weapons[(int)currentWeaponType - 1].GetComponent<Weapon>();
         player.ChangeWeaponAnim();
+        for (int i = 0; i < bulletCount.Length; i++)
+        {
+            if(i != (int)currentWeaponType - 1) bulletCount[i] = 0;
+        }
     }
 
     public void SwapWeapon()
-    {
+    {        
         weapons[(int)currentWeaponType - 1].SetActive(false);
         UseWeapon();
     }
