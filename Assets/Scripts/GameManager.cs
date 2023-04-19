@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
     public List<GameObject> _BulletPrefabs;
     public List<GameObject> _MonsterPrefabs;
 
-    float spawnTime = 2f;
+    public float SpawnTime = 2f;
 
     private void Awake()
     {
@@ -44,15 +44,11 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (_Pstat.isDead) Application.Quit();
-        spawnTime -= Time.deltaTime;
-        if(spawnTime < 0)
+        SpawnTime -= Time.deltaTime;
+        if(SpawnTime <= 0)
         {
-            spawnTime = 2f;
-            GameObject obj = Instantiate(_MonsterPrefabs[0], new Vector3(20f, 2f, 20f), Quaternion.identity);
-        }
-        
-
+            CreateMonster();
+        }        
     }
 
     void GameStart()
@@ -89,6 +85,19 @@ public class GameManager : MonoBehaviour
             _Pstat.weapons.Add(weapon);            
             weapon.SetActive(false);
         }        
+    }
+
+    void CreateMonster()
+    {
+        int num = Random.Range(0, _MonsterPrefabs.Count);
+        float x = Random.Range(-47, 47);
+        float z = Random.Range(-47, 47);
+        Vector3 SpawnPoint = new Vector3(x, 0, z);
+        if((SpawnPoint - _Player.transform.position).magnitude > 1)
+        {
+            Instantiate(_MonsterPrefabs[num], SpawnPoint, Quaternion.identity);
+            SpawnTime = 2f;
+        }
     }
 
     void GetWeaponPrefabs()

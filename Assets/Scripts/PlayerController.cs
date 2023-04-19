@@ -13,13 +13,6 @@ public class PlayerController : MonoBehaviour
     public Transform shootPoint;
     public GameObject muzzle;
 
-    [HideInInspector] public Transform animCam;
-    [HideInInspector] public Vector3 animCamForward;
-    [HideInInspector] public Vector3 animMove;
-    [HideInInspector] public Vector3 animMoveInput;
-    [HideInInspector] public float turnValue;
-    [HideInInspector] public float forwardValue;
-
     [Header("¿òÁ÷ÀÓ")]
     public Vector2 moveValue;
     public Vector2 moveValue2;
@@ -51,7 +44,6 @@ public class PlayerController : MonoBehaviour
         playerRb = GetComponent<Rigidbody>();
         stat = GetComponent<PlayerStat>();
         shootPoint = transform.Find("ShootPoint");
-        animCam = Camera.main.transform;
     }
     void Update()
     {
@@ -63,7 +55,7 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
-        Move();        
+        Move();
     }
 
     void InputMove()
@@ -163,7 +155,7 @@ public class PlayerController : MonoBehaviour
                 Instantiate(GameManager._Instance._BulletPrefabs[1], shootPoint.Find("SMG").transform.position, transform.rotation);
                 break;
             case WeaponType.SG:
-                for(int i = 0; i< 8; i++)
+                for(int i = 0; i< 10; i++)
                 {                    
                     Instantiate(GameManager._Instance._BulletPrefabs[2], shootPoint.Find("SG").transform.position, transform.rotation);
                 }                
@@ -176,7 +168,7 @@ public class PlayerController : MonoBehaviour
                 break;
             case WeaponType.RPG:
                 Quaternion q = Quaternion.Euler(0f, 180f, 0f);
-                Instantiate(GameManager._Instance._BulletPrefabs[3], shootPoint.Find("RPG").transform.position, transform.rotation * q);
+                Instantiate(GameManager._Instance._BulletPrefabs[4], shootPoint.Find("RPG").transform.position, transform.rotation * q);
                 break;
         }
     }
@@ -195,8 +187,7 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(.02f);
         Destroy(muzzle);        
         yield return null;
-    }
-    
+    }    
 
     void GetItem(GameObject obj)
     {

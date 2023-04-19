@@ -69,7 +69,7 @@ public class Bullet : MonoBehaviour
                 break;
             case WeaponType.SG:
                 bulletSpeed = 60f;
-                destroyTime = 0.1f;
+                destroyTime = 0.2f;
                 damage = 15;
                 break;
             case WeaponType.AR:
@@ -77,11 +77,10 @@ public class Bullet : MonoBehaviour
                 bulletSpeed = 50f;
                 damage = 30;
                 break;
-            case WeaponType.RPG:
-                
+            case WeaponType.RPG:                
                 bulletSpeed = 25f;
                 destroyTime = 1f;
-                damage = 100;
+                damage = 200;
                 break;
         }
     }
@@ -89,8 +88,7 @@ public class Bullet : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Enemy"))
-        {
-            Debug.Log("!");
+        {            
             if (currentWeaponType == WeaponType.RPG)
             {
                 GameObject obj = Instantiate(explosion, this.transform.position, Quaternion.identity);

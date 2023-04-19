@@ -132,7 +132,7 @@ MonoBehaviour:
   damage: 0
   currentWeaponType: 0
   bulletSpeed: 5
-  destroyTime: 2
+  destroyTime: 0.5
   explosion: {fileID: 8886869062709099707, guid: 57bc3736062633143a9ae4a0da9fe2fe, type: 3}
 --- !u!96 &2223614229669038552
 TrailRenderer:

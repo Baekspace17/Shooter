@@ -30,7 +30,7 @@ public class PlayerStat : MonoBehaviour
     void Update()
     {
         CheckHp();
-        
+        if (isDead) Dead();
     }
 
     void FixedUpdate()
@@ -84,6 +84,11 @@ public class PlayerStat : MonoBehaviour
         {
             currentHp = maxHp;
         }
+    }
+
+    void Dead()
+    {
+        Destroy(this.gameObject);
     }
 
     public void Heal(int hp)

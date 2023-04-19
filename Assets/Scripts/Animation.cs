@@ -19,6 +19,8 @@ public class Animation : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         pc = GetComponent<PlayerController>();
+
+        animCam = Camera.main.transform;
     }
 
     void FixedUpdate()

@@ -2680,12 +2680,6 @@ MonoBehaviour:
   MuzzleRoot: {fileID: 0}
   shootPoint: {fileID: 0}
   muzzle: {fileID: 0}
-  animCam: {fileID: 0}
-  animCamForward: {x: 0, y: 0, z: 0}
-  animMove: {x: 0, y: 0, z: 0}
-  animMoveInput: {x: 0, y: 0, z: 0}
-  turnValue: 0
-  forwardValue: 0
   moveValue: {x: 0, y: 0}
   moveValue2: {x: 0, y: 0}
   currentVelocity: {x: 0, y: 0, z: 0}
@@ -2736,7 +2730,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentHp: 0
-  maxHp: 10
+  maxHp: 100
   isDead: 0
   gold: 0
   weaponRoot: {fileID: 9009993962536955500}
