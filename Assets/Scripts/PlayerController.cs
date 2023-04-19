@@ -143,7 +143,7 @@ public class PlayerController : MonoBehaviour
                 if (stat.bulletCount[(int)stat.currentWeaponType - 1] > 0)
                 {
                     stat.bulletCount[(int)stat.currentWeaponType - 1]--;
-                    Debug.Log("파이어 " + stat.currentWeapon + stat.bulletCount[(int)stat.currentWeaponType - 1]);
+                    //Debug.Log("파이어 " + stat.currentWeapon + stat.bulletCount[(int)stat.currentWeaponType - 1]);
                     fireCoolTime = fireRate;
                     bulletCreate();
                     MuzzleCreate();
@@ -157,22 +157,26 @@ public class PlayerController : MonoBehaviour
         switch (stat.currentWeaponType)
         {
             case WeaponType.Pistol:
+                Instantiate(GameManager._Instance._BulletPrefabs[1], shootPoint.Find("Pistol").transform.position, transform.rotation);
+                break;
             case WeaponType.SMG:
-                Instantiate(GameManager._Instance._BulletPrefabs[1], shootPoint.position, transform.rotation);
+                Instantiate(GameManager._Instance._BulletPrefabs[1], shootPoint.Find("SMG").transform.position, transform.rotation);
                 break;
             case WeaponType.SG:
                 for(int i = 0; i< 8; i++)
                 {                    
-                    Instantiate(GameManager._Instance._BulletPrefabs[2], shootPoint.position, transform.rotation);
+                    Instantiate(GameManager._Instance._BulletPrefabs[2], shootPoint.Find("SG").transform.position, transform.rotation);
                 }                
                 break;
             case WeaponType.AR:
+                Instantiate(GameManager._Instance._BulletPrefabs[2], shootPoint.Find("AR").transform.position, transform.rotation);
+                break;
             case WeaponType.LMG:
-                Instantiate(GameManager._Instance._BulletPrefabs[0], shootPoint.position, transform.rotation);
+                Instantiate(GameManager._Instance._BulletPrefabs[0], shootPoint.Find("LMG").transform.position, transform.rotation);
                 break;
             case WeaponType.RPG:
                 Quaternion q = Quaternion.Euler(0f, 180f, 0f);
-                Instantiate(GameManager._Instance._BulletPrefabs[3], shootPoint.position, transform.rotation * q);
+                Instantiate(GameManager._Instance._BulletPrefabs[3], shootPoint.Find("RPG").transform.position, transform.rotation * q);
                 break;
         }
     }
