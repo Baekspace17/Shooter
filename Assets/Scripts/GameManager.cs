@@ -17,6 +17,9 @@ public class GameManager : MonoBehaviour
     public List<GameObject> _ItemPrefabs;
     public List<GameObject> _MuzzlePrefabs;
     public List<GameObject> _BulletPrefabs;
+    public List<GameObject> _MonsterPrefabs;
+
+    float spawnTime = 2f;
 
     private void Awake()
     {
@@ -42,6 +45,14 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         if (_Pstat.isDead) Application.Quit();
+        spawnTime -= Time.deltaTime;
+        if(spawnTime < 0)
+        {
+            spawnTime = 2f;
+            GameObject obj = Instantiate(_MonsterPrefabs[0], new Vector3(20f, 2f, 20f), Quaternion.identity);
+        }
+        
+
     }
 
     void GameStart()
@@ -58,6 +69,7 @@ public class GameManager : MonoBehaviour
         GetItemPrefabs();
         GetMuzzlePrefabs();
         GetBulletPrefabs();
+        GetMonsterPrefabs();
     }
 
     void CreatePlayer()
@@ -112,6 +124,15 @@ public class GameManager : MonoBehaviour
         foreach (GameObject obj in getObj)
         {
             _BulletPrefabs.Add(obj);
+        }
+    }
+
+    void GetMonsterPrefabs()
+    {
+        GameObject[] getObj = Resources.LoadAll<GameObject>("Prefabs/Monster/");
+        foreach (GameObject obj in getObj)
+        {
+            _MonsterPrefabs.Add(obj);
         }
     }
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public enum MonsterType
 {
@@ -18,6 +19,9 @@ public class Monster : MonoBehaviour
     public float moveSpeed;
 
     public GameObject Weapon;
+    public Rigidbody monsterRb;
+    public Transform playerPos;
+    public NavMeshAgent nav;
 
     // Start is called before the first frame update
     void Start()
@@ -32,14 +36,22 @@ public class Monster : MonoBehaviour
         if (isDead)
         {
             Dead();
-        }        
+        }
+        Move();
+        Attack();
     }
-
-
 
     void Init()
     {
-        switch(type)
+        monsterRb = GetComponent<Rigidbody>();
+        nav = GetComponent<NavMeshAgent>();
+        
+        MonsterSet();
+    }
+
+    void MonsterSet()
+    {
+        switch (type)
         {
             case MonsterType.Red:
                 maxHp = 100;
@@ -62,6 +74,19 @@ public class Monster : MonoBehaviour
                 moveSpeed = 3f;
                 break;
         }
+    }
+
+    void Move()
+    {
+        playerPos = GameManager._Instance._Player.transform;
+        if(!isDead) nav.SetDestination(playerPos.position);
+
+    }
+
+    void Attack()
+    {
+        playerPos = GameManager._Instance._Player.transform;
+
     }
 
     void DeadCheck()
