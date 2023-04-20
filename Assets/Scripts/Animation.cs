@@ -64,6 +64,7 @@ public class Animation : MonoBehaviour
 
     void UpdateAnim()
     {
+        animator.SetBool("Dead", GameManager._Instance._Pstat.isDead);
         animator.SetFloat("MoveX", turnValue * 2f, 0.1f, Time.deltaTime);
         animator.SetFloat("MoveY", forwardValue * 2f, 0.1f, Time.deltaTime);
         animator.SetBool("UsePistol", pc.usePistol);

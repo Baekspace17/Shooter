@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.Progress;
 
 public class PlayerStat : MonoBehaviour
 {
@@ -88,7 +87,7 @@ public class PlayerStat : MonoBehaviour
 
     void Dead()
     {
-        Destroy(this.gameObject);
+        
     }
 
     public void Heal(int hp)

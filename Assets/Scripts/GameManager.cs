@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class GameManager : MonoBehaviour
 {
@@ -12,6 +11,7 @@ public class GameManager : MonoBehaviour
     public GameObject _DashTrail;
     public PlayerController _Pctrl;
     public PlayerStat _Pstat;
+    public UI ui;
 
     public List<GameObject> _WeaponPrefabs;
     public List<GameObject> _ItemPrefabs;
@@ -20,6 +20,8 @@ public class GameManager : MonoBehaviour
     public List<GameObject> _MonsterPrefabs;
 
     public float SpawnTime = 2f;
+    public bool gameOver = false;
+    public int Score;
 
     private void Awake()
     {
@@ -44,15 +46,21 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        SpawnTime -= Time.deltaTime;
-        if(SpawnTime <= 0)
+        if(!_Pstat.isDead)
         {
-            CreateMonster();
-        }        
+            SpawnTime -= Time.deltaTime;
+            if (SpawnTime <= 0) CreateMonster();
+        }
+        else
+        {
+            ui.gameOver.SetActive(true);
+            gameOver = true;
+        }
     }
 
     void GameStart()
     {
+        Cursor.visible = false;
         CreatePlayer();
         CreateWeapon();
     }

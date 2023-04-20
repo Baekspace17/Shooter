@@ -28,6 +28,8 @@ public class Monster : MonoBehaviour
     public bool usePistol;
     public bool useRifle;
     public bool move;
+    public bool itemdrop;
+    public int score;
     public NavMeshAgent nav;
 
     public float fireRate;
@@ -87,6 +89,7 @@ public class Monster : MonoBehaviour
                 usePistol = true;
                 moveSpeed = 4f;
                 fireRate = 1f;
+                score = 50;
                 break;
             case MonsterType.Blue:
                 maxHp = 100;
@@ -95,6 +98,7 @@ public class Monster : MonoBehaviour
                 usePistol = true;
                 moveSpeed = 5f;
                 fireRate = 0.8f;
+                score = 100;
                 break;
             case MonsterType.Green:
                 maxHp = 150;
@@ -103,6 +107,7 @@ public class Monster : MonoBehaviour
                 useRifle = true;
                 moveSpeed = 3f;
                 fireRate = 1.5f;
+                score = 150;
                 break;
             case MonsterType.Boss:
                 maxHp = 1000;
@@ -111,6 +116,7 @@ public class Monster : MonoBehaviour
                 useRifle = true;
                 moveSpeed = 3f;
                 fireRate = 0.6f;
+                score = 500;
                 break;
         }
     }
@@ -168,6 +174,23 @@ public class Monster : MonoBehaviour
 
     void Dead()
     {
+        if(!itemdrop)
+        {
+            itemdrop = true;
+            GameManager._Instance.Score += score;
+            List<GameObject> item = GameManager._Instance._ItemPrefabs;
+            int num = Random.Range(0, item.Count);
+            int dropItem = Random.Range(0, 5);
+            if (dropItem == 2)
+            {
+                Instantiate(item[num], transform.position, Quaternion.identity);                
+            }
+            else if (dropItem == 3)
+            {
+                Instantiate(item[2], transform.position, Quaternion.identity);
+            }
+        }        
+        
         Destroy(this.gameObject.GetComponent<CapsuleCollider>());
         Destroy(this.gameObject, 1.5f);
     }

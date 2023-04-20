@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
-using static UnityEditor.Progress;
 
 public class PlayerController : MonoBehaviour
 {
@@ -12,6 +11,8 @@ public class PlayerController : MonoBehaviour
     public Transform MuzzleRoot;
     public Transform shootPoint;
     public GameObject muzzle;
+    public CapsuleCollider playerCollider;
+    public LineRenderer line;
 
     [Header("¿òÁ÷ÀÓ")]
     public Vector2 moveValue;
@@ -43,14 +44,27 @@ public class PlayerController : MonoBehaviour
     {
         playerRb = GetComponent<Rigidbody>();
         stat = GetComponent<PlayerStat>();
+        playerCollider = GetComponent<CapsuleCollider>();
         shootPoint = transform.Find("ShootPoint");
+        line.enabled = false;
     }
     void Update()
     {
-        InputMove();
-        LookAtMouse();        
-        Dash();
-        Fire();
+        if(!GameManager._Instance.gameOver)
+        {
+            DrawLine();
+            InputMove();
+            LookAtMouse();
+            Dash();
+            Fire();
+        }
+        else
+        {
+            line.enabled = false;
+            currentVelocity = Vector3.zero;
+        } 
+            
+
     }
 
     void FixedUpdate()
@@ -101,6 +115,7 @@ public class PlayerController : MonoBehaviour
             dashPos = transform.TransformDirection(Vector3.back);
             targetSpeed = dashPower;
             isDash = true;
+            playerCollider.isTrigger = true;
             dashCoolTime = 3f;
             Invoke("EndDash", 0.3f);
         }
@@ -110,6 +125,7 @@ public class PlayerController : MonoBehaviour
     {
         targetSpeed = moveSpeed;
         isDash = false;
+        playerCollider.isTrigger = false;
     }
 
     void Fire()
@@ -141,6 +157,14 @@ public class PlayerController : MonoBehaviour
                     MuzzleCreate();
                 }
             }            
+        }
+    }
+
+    void DrawLine()
+    {
+        if(stat.currentWeaponType != WeaponType.None)
+        {
+            line.enabled = true;
         }
     }
 
@@ -202,18 +226,24 @@ public class PlayerController : MonoBehaviour
             if (stat.currentWeaponType == WeaponType.None)
             {
                 stat.UseWeapon();
+                stat.bulletCount[(int)stat.getItemWeapon - 1] = item.weaponScript.bulletCount;
             }
+
             if (stat.currentWeaponType != stat.getItemWeapon)
             {
                 ChangeWeaponAnim();
                 stat.Invoke("SwapWeapon", 0.4f);
+                stat.bulletCount[(int)stat.getItemWeapon - 1] = item.weaponScript.bulletCount;
             }
-
-            stat.bulletCount[(int)stat.getItemWeapon - 1] = item.weaponScript.bulletCount;
+            else
+            {
+                stat.bulletCount[(int)stat.getItemWeapon - 1] += item.weaponScript.bulletCount;
+            }
+            
         }
         if (item.itemType == ItemType.Heal)
         {
-            stat.currentHp += stat.maxHp * item.healPoint;
+            stat.currentHp += item.healPoint;
         }
     }
 

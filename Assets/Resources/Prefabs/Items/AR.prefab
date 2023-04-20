@@ -268,8 +268,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea600875c934a5c44b82333bd463c420, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletCount: 0
   wType: 3
+  fireRate: 0
+  range: 0
+  bulletCount: 0
 --- !u!1 &4954403543174396438
 GameObject:
   m_ObjectHideFlags: 0
@@ -628,7 +630,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6662424016897666947}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3, y: 1, z: -3}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -666,6 +668,7 @@ MonoBehaviour:
   upDownSpeed: 2
   itemType: 1
   gold: 0
+  healPoint: 0
   weaponScript: {fileID: 0}
 --- !u!1 &6662424017499155335
 GameObject:

@@ -6,7 +6,7 @@ public class CameraController : MonoBehaviour
 {
 
     public Transform playerTr;
-    public float smoothing = 0.2f;
+    public float smoothing = 0.1f;
     public float camZoffset = -10f;
 
     void Start()
@@ -17,14 +17,10 @@ public class CameraController : MonoBehaviour
     void Update()
     {
         if(playerTr == null) playerTr = GameManager._Instance._Player.transform;
-    }
-
-    void FixedUpdate()
-    {
-        if(playerTr != null)
+        else
         {
             Vector3 targetPos = new Vector3(playerTr.position.x, transform.position.y, playerTr.position.z + camZoffset);
             transform.position = Vector3.Lerp(transform.position, targetPos, smoothing);
-        }        
+        }
     }    
 }
