@@ -53,6 +53,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
+            ui.playerStatObj.SetActive(false);
             ui.gameOver.SetActive(true);
             gameOver = true;
         }

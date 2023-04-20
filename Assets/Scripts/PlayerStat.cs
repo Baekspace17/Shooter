@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class PlayerStat : MonoBehaviour
 {
-    public int currentHp;
-    public int maxHp = 100;
+    public float currentHp;
+    public float maxHp = 100f;
     public bool isDead;
 
     public int gold = 0;

@@ -16,11 +16,15 @@ public class CameraController : MonoBehaviour
 
     void Update()
     {
-        if(playerTr == null) playerTr = GameManager._Instance._Player.transform;
-        else
+        if(playerTr == null) playerTr = GameManager._Instance._Player.transform;        
+    }
+
+    private void FixedUpdate()
+    {
+        if(playerTr != null)
         {
             Vector3 targetPos = new Vector3(playerTr.position.x, transform.position.y, playerTr.position.z + camZoffset);
             transform.position = Vector3.Lerp(transform.position, targetPos, smoothing);
-        }
-    }    
+        }        
+    }
 }

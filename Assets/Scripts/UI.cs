@@ -2,16 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UI : MonoBehaviour
 {
     public RectTransform crossHair;
     public TextMeshProUGUI scoreText;
-    public TextMeshProUGUI healthText;
+    public Slider healthBar;
+    public Slider dashCooltime;
     public TextMeshProUGUI ammoText;
-    public TextMeshProUGUI weaponText;
     public GameObject gameOver;
-    public PlayerStat stat;
+    public GameObject playerStatObj;
+    public PlayerStat statScript;
 
     // Start is called before the first frame update
     void Start()
@@ -26,44 +28,65 @@ public class UI : MonoBehaviour
 
         if (GameManager._Instance._Pstat != null)
         {
-            stat = GameManager._Instance._Pstat;
+            statScript = GameManager._Instance._Pstat;
+            playerStatObj.SetActive(true);
+            SliderSet();
             TextSet();
         }
+    }
+    void SliderSet()
+    {
+        healthBar.value = statScript.currentHp / statScript.maxHp;
+        dashCooltime.value = GameManager._Instance._Pctrl.dashCoolTime / 3f;
     }
 
     void TextSet()
     {
-        healthText.text = "Health " + stat.currentHp.ToString();
         scoreText.text = "Score : " + GameManager._Instance.Score;
-        switch (stat.currentWeaponType)
+
+        switch (statScript.currentWeaponType)
         {
             case WeaponType.None:
                 ammoText.text = "0";
-                weaponText.text = "None";
+                ammoText.fontSize = 25;
+                ammoText.rectTransform.anchoredPosition = Vector2.zero;
+                ammoText.color = new Color(1f, 1f, 1f, 1f);
                 break;
             case WeaponType.Pistol:
-                ammoText.text = "Infinity";
-                weaponText.text = "Pistol";
+                ammoText.text = "¡Ä";
+                ammoText.fontSize = 55;
+                ammoText.rectTransform.anchoredPosition = new Vector2(0f, 3f);
+                ammoText.color = new Color(1f, 1f, 1f, 1f);
                 break;
             case WeaponType.SMG:
-                ammoText.text = "Ammo " + stat.bulletCount[(int)stat.currentWeaponType - 1].ToString();
-                weaponText.text = "SMG";
+                ammoText.text = statScript.bulletCount[(int)statScript.currentWeaponType - 1].ToString();
+                ammoText.fontSize = 25;
+                ammoText.rectTransform.anchoredPosition = Vector2.zero;
+                ammoText.color = new Color(1f, 0f, 1f, 1f);
                 break;
             case WeaponType.AR:
-                ammoText.text = "Ammo " + stat.bulletCount[(int)stat.currentWeaponType - 1].ToString();
-                weaponText.text = "Rifle";
+                ammoText.text = statScript.bulletCount[(int)statScript.currentWeaponType - 1].ToString();
+                ammoText.fontSize = 25;
+                ammoText.rectTransform.anchoredPosition = Vector2.zero;
+                ammoText.color = new Color(0f, 1f, 1f, 1f);
                 break;
             case WeaponType.SG:
-                ammoText.text = "Ammo " + stat.bulletCount[(int)stat.currentWeaponType - 1].ToString();
-                weaponText.text = "ShotGun";
+                ammoText.text = statScript.bulletCount[(int)statScript.currentWeaponType - 1].ToString();
+                ammoText.fontSize = 25;
+                ammoText.rectTransform.anchoredPosition = Vector2.zero;
+                ammoText.color = new Color(1f, 1f, 0f, 1f);
                 break;
             case WeaponType.LMG:
-                ammoText.text = "Ammo " + stat.bulletCount[(int)stat.currentWeaponType - 1].ToString();
-                weaponText.text = "LMG";
+                ammoText.text = statScript.bulletCount[(int)statScript.currentWeaponType - 1].ToString();
+                ammoText.fontSize = 25;
+                ammoText.rectTransform.anchoredPosition = Vector2.zero;
+                ammoText.color = new Color(0.5f, 0f, 1f, 1f);
                 break;
             case WeaponType.RPG:
-                ammoText.text = "Ammo " + stat.bulletCount[(int)stat.currentWeaponType - 1].ToString();
-                weaponText.text = "RPG";
+                ammoText.text = statScript.bulletCount[(int)statScript.currentWeaponType - 1].ToString();
+                ammoText.fontSize = 25;
+                ammoText.rectTransform.anchoredPosition = Vector2.zero;
+                ammoText.color = new Color(1f, 0f, 0f, 1f);
                 break;
         }
     }

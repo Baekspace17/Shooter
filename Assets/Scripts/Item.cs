@@ -14,8 +14,8 @@ public class Item : MonoBehaviour
     bool objUp = false;
     public float upDownSpeed = 2f;
     public ItemType itemType;
-    public int gold = 0;
-    public int healPoint = 0;
+    public int score = 0;
+    public float healPoint = 0f;
     public Weapon weaponScript;
 
     // Start is called before the first frame update
@@ -43,8 +43,8 @@ public class Item : MonoBehaviour
     void SetItem(ItemType type)
     {
         if (type == ItemType.Gold)
-        {            
-            gold = (int)Random.Range(20, 50);
+        {
+            score = (int)Random.Range(100, 500);
         }
         if (type == ItemType.Weapon)
         {            
@@ -52,7 +52,7 @@ public class Item : MonoBehaviour
         }
         if (type == ItemType.Heal)
         {
-            healPoint = 30;
+            healPoint = 30f;
         }
     }
 }

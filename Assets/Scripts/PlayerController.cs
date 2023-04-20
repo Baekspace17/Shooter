@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour
     public Vector3 currentVelocity;
     public Vector3 dashVelocity;
     public Vector3 dashPos;
+    public Vector3 mousePos;
     public Vector3 movePosition;
 
     [Header("½ºÇÇµå")]
@@ -76,6 +77,8 @@ public class PlayerController : MonoBehaviour
     {
         moveValue = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));        
         currentVelocity = new Vector3(moveValue.x, 0f, moveValue.y).normalized;
+        mousePos = new Vector3(Input.mousePosition.x - (Screen.width / 2),
+            transform.position.y, Input.mousePosition.y - (Screen.height / 2));
     }
 
     void LookAtMouse()
@@ -107,16 +110,18 @@ public class PlayerController : MonoBehaviour
 
     void Dash()
     {
-        dashCoolTime -= Time.deltaTime;
-        if (dashCoolTime < 0) dashCoolTime = 0;
+        dashCoolTime += Time.deltaTime;
+        if (dashCoolTime > 3f) dashCoolTime = 3f;
 
-        if (dashCoolTime <= 0 && Input.GetKeyDown(KeyCode.Space))
+        if (dashCoolTime >= 3f && Input.GetKeyDown(KeyCode.Mouse1))
         {
-            dashPos = transform.TransformDirection(Vector3.back);
+            //dashPos = transform.TransformDirection(Vector3.back);
+            dashPos = mousePos;
+            dashPos.Normalize();
             targetSpeed = dashPower;
             isDash = true;
             playerCollider.isTrigger = true;
-            dashCoolTime = 3f;
+            dashCoolTime = 0f;
             Invoke("EndDash", 0.3f);
         }
     }
@@ -218,7 +223,7 @@ public class PlayerController : MonoBehaviour
         Item item = obj.GetComponent<Item>();
         if (item.itemType == ItemType.Gold)
         {
-            stat.gold += item.gold;
+            GameManager._Instance.Score += item.score;
         }
         if (item.itemType == ItemType.Weapon)
         {
@@ -266,10 +271,15 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Item")
+        if (other.CompareTag("Item"))
         {
             GetItem(other.gameObject);
             Destroy(other.gameObject);
+        }
+        if (other.CompareTag("Wall") && isDash)
+        {
+            targetSpeed = 0f;
+            playerCollider.isTrigger = false;
         }
     }
 }
