@@ -63,9 +63,7 @@ public class PlayerController : MonoBehaviour
         {
             line.enabled = false;
             currentVelocity = Vector3.zero;
-        } 
-            
-
+        }
     }
 
     void FixedUpdate()

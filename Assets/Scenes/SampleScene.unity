@@ -1257,7 +1257,7 @@ MonoBehaviour:
   dashCooltime: {fileID: 327771287}
   ammoText: {fileID: 1280131018}
   gameOver: {fileID: 2044847209}
-  playerStatObj: {fileID: 0}
+  playerStatObj: {fileID: 3895148919478972790}
   statScript: {fileID: 0}
 --- !u!1 &963194225
 GameObject:
