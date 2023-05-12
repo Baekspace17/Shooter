@@ -133,33 +133,66 @@ public class PlayerController : MonoBehaviour
 
     void Fire()
     {
-        fireCoolTime -= Time.deltaTime;
-        if (fireCoolTime < 0) fireCoolTime = 0;
-
-        if (stat.currentWeaponType != WeaponType.None)
+        if(Input.GetKey(KeyCode.Mouse0) && stat.currentWeaponType != WeaponType.None)
         {
-            fireRate = stat.currentWeapon.fireRate;
-            if (stat.currentWeaponType == WeaponType.RPG && fireCoolTime <= 0)
+            fireRate = stat.currentWeapon.fireRate;            
+            if (!isFire)
             {
-                stat.weapons[(int)stat.currentWeaponType - 1].transform.Find("Rocket").gameObject.SetActive(true);
-            }
-
-            if (fireCoolTime <= 0 && Input.GetKey(KeyCode.Mouse0))
-            {
-                if (stat.currentWeaponType == WeaponType.RPG)
-                {
-                    stat.weapons[(int)stat.currentWeaponType - 1].transform.Find("Rocket").gameObject.SetActive(false);
-                }
-
-                if (stat.bulletCount[(int)stat.currentWeaponType - 1] > 0)
-                {
-                    stat.bulletCount[(int)stat.currentWeaponType - 1]--;
-                    //Debug.Log("파이어 " + stat.currentWeapon + stat.bulletCount[(int)stat.currentWeaponType - 1]);
-                    fireCoolTime = fireRate;
-                    bulletCreate();
-                    MuzzleCreate();
-                }
+                StartCoroutine(Shoot(fireRate));
             }            
+        }
+        //fireCoolTime -= Time.deltaTime;
+        //if (fireCoolTime < 0) fireCoolTime = 0;
+
+        //if (stat.currentWeaponType != WeaponType.None)
+        //{
+        //    fireRate = stat.currentWeapon.fireRate;
+        //    if (stat.currentWeaponType == WeaponType.RPG && fireCoolTime <= 0)
+        //    {
+        //        stat.weapons[(int)stat.currentWeaponType - 1].transform.Find("Rocket").gameObject.SetActive(true);
+        //    }
+
+        //    if (fireCoolTime <= 0 && Input.GetKey(KeyCode.Mouse0))
+        //    {
+        //        if (stat.currentWeaponType == WeaponType.RPG)
+        //        {
+        //            stat.weapons[(int)stat.currentWeaponType - 1].transform.Find("Rocket").gameObject.SetActive(false);
+        //        }
+
+        //        if (stat.bulletCount[(int)stat.currentWeaponType - 1] > 0)
+        //        {
+        //            stat.bulletCount[(int)stat.currentWeaponType - 1]--;
+        //            //Debug.Log("파이어 " + stat.currentWeapon + stat.bulletCount[(int)stat.currentWeaponType - 1]);
+        //            fireCoolTime = fireRate;
+        //            bulletCreate();
+        //            MuzzleCreate();
+        //        }
+        //    }            
+        //}
+    }
+
+    IEnumerator Shoot(float fireCoolTime)
+    {
+        if (stat.bulletCount[(int)stat.currentWeaponType - 1] > 0)
+        {
+            if (stat.currentWeaponType == WeaponType.RPG)
+            {
+                stat.weapons[(int)stat.currentWeaponType - 1].transform.Find("Rocket").gameObject.SetActive(false);
+            }
+            stat.bulletCount[(int)stat.currentWeaponType - 1]--;
+            bulletCreate();
+            MuzzleCreate();
+        }
+        else
+        {
+            yield return null;
+        }
+        isFire = true;
+        yield return new WaitForSeconds(fireCoolTime);
+        isFire = false;
+        if (stat.currentWeaponType == WeaponType.RPG)
+        {
+            stat.weapons[(int)stat.currentWeaponType - 1].transform.Find("Rocket").gameObject.SetActive(true);
         }
     }
 
