@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     public GameObject _PlayerPrefab;
     public GameObject _Player;
     public GameObject _DashTrail;
+    public GameObject _MapObj;
     public PlayerController _Pctrl;
     public PlayerStat _Pstat;
     public UI ui;
@@ -99,8 +100,8 @@ public class GameManager : MonoBehaviour
     void CreateMonster()
     {
         int num = Random.Range(0, _MonsterPrefabs.Count);
-        float x = Random.Range(-47, 47);
-        float z = Random.Range(-47, 47);
+        float x = Random.Range(_MapObj.transform.position.x - 47, _MapObj.transform.position.x + 47);
+        float z = Random.Range(_MapObj.transform.position.z - 47, _MapObj.transform.position.z + 47);
         Vector3 SpawnPoint = new Vector3(x, 0, z);
         if((SpawnPoint - _Player.transform.position).magnitude > 1)
         {
